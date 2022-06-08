@@ -23,89 +23,52 @@
  * C - Componenta C este formată dintr-o cifră de control⁠(en), care permite depistarea eventualelor erori de înlocuire sau inversare a cifrelor din componența C.N.P
  */
 
-defined('ERROR_100') || define('ERROR_100', 'Număr invalid de caractere');
-defined('ERROR_101') || define('ERROR_101', 'CNP-ul poate conține numai cifre fără spații libere');
-defined('ERROR_102') || define('ERROR_102', 'Componenta care reprezintă sexul și secolul în care s-a născut persoana nu este validă');
-defined('ERROR_103') || define('ERROR_103', 'Câmpul aferent lunii are o valoare invalidă');
-defined('ERROR_104') || define('ERROR_104', 'Câmpul aferent zilei are o valoare invalidă');
-defined('ERROR_105') || define('ERROR_105', 'Cod județ invalid');
+
 
 class CNPDecoder{
     /**
-     * Validare structură CNP
-     * Dacă validarea este ok putem sparge CNP-ul în componentele principale
      * @param $cnp
-     * @return bool
+     * @return array|bool
      */
     private function Validate($cnp){
+        if(strlen($cnp) != 13)
+            return 100;
 
-        if(strlen($cnp) != 13){
-            $this->validator["message"] = ERROR_100;
-            $this->validator["code"] = 100;
-            return false;
-        }
+        if(!ctype_digit($cnp))
+            return 101;
 
-        if(!ctype_digit($cnp)){
-            $this->validator["message"] = ERROR_101;
-            $this->validator["code"] = 101;
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Am spart CNP-ul în componente și am validat componentele care vin cu informații predefinite
-     * @param $cnp
-     * @return bool
-     */
-    private function BuildComponents($cnp){
         // Componenta care reprezintă genul și secolul
         if((int)$cnp[0] >= 1 && (int)$cnp[0] <= 8)
             $this->S = $cnp[0];
-        else{
-            $this->validator["message"] = ERROR_102;
-            $this->validator["code"] = 102;
-            return false;
-        }
-
+        else
+            return 102;
         // Componenta care reprezintă ultimele două cifre din anul nașterii
         $this->AA = $cnp[1].$cnp[2];
 
         // Componenta lunii nașterii
         if(intval($cnp[3].$cnp[4]) >= 1 && intval($cnp[3].$cnp[4]) <= 12)
             $this->LL = intval($cnp[3].$cnp[4]);
-        else{
-            $this->validator["message"] = ERROR_103;
-            $this->validator["code"] = 103;
-            return false;
-        }
+        else
+            return 103;
 
         // Componenta zilei nașterii
         if(intval($cnp[5].$cnp[6]) >= 1 && intval($cnp[5].$cnp[6]) <= 31)
             $this->ZZ = intval($cnp[5].$cnp[6]);
-        else{
-            $this->validator["message"] = ERROR_104;
-            $this->validator["code"] = 104;
-            return false;
-        }
+        else
+            return 104;
 
         // Componenta codului județului
         if(array_key_exists(intval($cnp[7].$cnp[8]), $this->judete))
             $this->JJ = intval($cnp[7].$cnp[8]);
-        else{
-            $this->validator["message"] = ERROR_105;
-            $this->validator["code"] = 105;
-            return false;
-        }
+        else
+            return 105;
 
         // Componenta secvențială prin care se diferențiază persoanele de același sex, născute în același loc și cu aceeași dată de naștere.
         $this->NNN = $cnp[9].$cnp[10].$cnp[11];
 
         // Componenta care permite depistarea eventualelor erori de înlocuire sau inversare a cifrelor din componența C.N.P
         $this->C = $cnp[12];
-
-        return true;
+        return 200;
     }
 
     /**
@@ -276,13 +239,39 @@ class CNPDecoder{
     public function __construct($cnp)
     {
         // Se pot adăuga validări ulterioare pentru componentele de timp/dată
-        if(!$this->Validate($cnp))
-            return false;
+       try{
+           $this->validator = $this->Validate($cnp);
+           if($this->validator != 200)
+               throw new CNPExceptions(null, $this->validator);
 
-        // Metoda care sparge CNP-ul în componentele aferente
-        if(!$this->BuildComponents($cnp))
-            return false;
+       } catch (CNPExceptions $e){
+           // În funție de necesitate schimbați aici GetErrorMessage() cu GetErrorCode()
+           exit($e->GetErrorMessage());
+       }
+    }
+}
 
-        return false;
+/**
+ * Class CNPExceptions
+ * Am decis să mut exceptiile întro clasă separată
+ * pentru a putea fii accesate și modificate mai
+ * ușor
+ */
+class CNPExceptions extends Exception {
+    const ERROR_100 = 'Număr invalid de caractere',
+          ERROR_101 = 'CNP-ul poate conține numai cifre fără spații libere',
+          ERROR_102 = 'Componenta care reprezintă sexul și secolul în care s-a născut persoana nu este validă',
+          ERROR_103 = 'Câmpul aferent lunii are o valoare invalidă',
+          ERROR_104 = 'Câmpul aferent zilei are o valoare invalidă',
+          ERROR_105 = 'Cod județ invalid',
+          ERROR_200 = 'OK';
+
+    public function GetErrorMessage(){
+        $error_msg = "self::ERROR_".$this->getCode();
+        return constant($error_msg);
+    }
+
+    public function GetErrorCode(){
+        return $this->getCode();
     }
 }
