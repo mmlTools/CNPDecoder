@@ -1,0 +1,24 @@
+{
+    "name": "mmltech/cnp-decoder",
+    "description": "O clasa simpla prin care se pot extrage componentele CNP-ului introdus, componente precum vârsta, jude?, gen, etc.",
+    "type": "library",
+    "license": "GNU General Public License v3.0",
+    "autoload": {
+        "psr-4": {
+            "CnpDecoder\\": "src/"
+        },
+        "files": [
+            "src/CnpDecoder.php"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Maxim Marco Laurentiu",
+            "email": "marcomaxim29@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.1.3"
+    }
+}

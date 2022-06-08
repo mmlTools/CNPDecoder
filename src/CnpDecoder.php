@@ -1,4 +1,4 @@
-<?php
+<?php namespace CnpDecoder;
 
 /**
  * Author: Marco Maxim
@@ -23,7 +23,7 @@
  * C - Componenta C este formată dintr-o cifră de control⁠(en), care permite depistarea eventualelor erori de înlocuire sau inversare a cifrelor din componența C.N.P
  */
 
-class CNPDecoder{
+class CnpDecoder{
     /**
      * @param $cnp
      * @return array|bool
@@ -260,7 +260,7 @@ class CNPDecoder{
  * pentru a putea fii accesate și modificate mai
  * ușor
  */
-class CNPExceptions extends Exception {
+class CNPExceptions extends \Exception {
     const ERROR_100 = 'Număr invalid de caractere',
           ERROR_101 = 'CNP-ul poate conține numai cifre fără spații libere',
           ERROR_102 = 'Componenta care reprezintă sexul și secolul în care s-a născut persoana nu este validă',
