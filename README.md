@@ -24,10 +24,9 @@
 
 ## Utilizare
 ```php
-$cnp = new CNPDecoder("1234567890123");
+ <?php
+    $cnp = new CNPDecoder($_POST["cnp"]);
 
-if(!$cnp->validator)
-{
     echo "Vârsta: ".$cnp->Age();
     echo "<BR>Anul nașterii: ".$cnp->BirthYear();
     echo "<BR>Data nașterii timestamp: ".$cnp->BirthYearTimestamp();
@@ -38,32 +37,8 @@ if(!$cnp->validator)
     echo "<BR>Denumire județ: ".$cnp->CountyName();
     echo "<BR><BR><strong>Interpretare CNP conform clasei:</strong>";
     echo "<BR>Persoana cu CNP <b>".$_POST["cnp"]."</b> a fost a <b>".$cnp->ControlNumber()."</b>-a persoană de sex <b>".($cnp->Gender() == 1 ? "masculin" : "feminin")."</b> născută la data de <b>".date("d M Y", $cnp->BirthYearTimestamp())."</b> în județul <b>".$cnp->CountyName()."</b>";
-} else{
-    echo "Eroare implicită: <span style='color: red'>".$cnp->validator["message"]."</span><br>";
-    switch ($cnp->validator["code"]){
-        case 100:
-            echo "Eroare customizată: <span style='color: red'>Eroare pentru număr invalid de caractere</span>";
-            break;
-        case 101:
-            echo "Eroare customizată: <span style='color: red'>Eroare conținut/caractere în CNP</span>";
-            break;
-        case 102:
-            echo "Eroare customizată: <span style='color: red'>Eroare componentă gen/secol invalidă</span>";
-            break;
-        case 103:
-            echo "Eroare customizată: <span style='color: red'>Eroare câmp aferent lunii</span>";
-            break;
-        case 104:
-            echo "Eroare customizată: <span style='color: red'>Eroare câmp aferent zilei</span>";
-            break;
-        case 105:
-            echo "Eroare customizată: <span style='color: red'>Eroare componentă cod județ invalid</span>";
-            break;
-        default:
-            echo "Eroare customizată: <span style='color: red'>Cod de eroare nedefinit</span>";
-            break;
-    }
-}
+
+    ?>
 ```
 
 ## Metode disponibile

@@ -23,8 +23,6 @@
  * C - Componenta C este formată dintr-o cifră de control⁠(en), care permite depistarea eventualelor erori de înlocuire sau inversare a cifrelor din componența C.N.P
  */
 
-
-
 class CNPDecoder{
     /**
      * @param $cnp
@@ -246,6 +244,11 @@ class CNPDecoder{
 
        } catch (CNPExceptions $e){
            // În funție de necesitate schimbați aici GetErrorMessage() cu GetErrorCode()
+           // de asemenea aveți aici și o listă cu posibile metode de returnare a valorilor
+           // return $e->GetErrorMessage()
+           // return $e->GetErrorCode()
+           // return {$e->GetErrorMessage(), $e->GetErrorCode()];
+           // return {"message" => $e->GetErrorMessage(), "code" => $e->GetErrorCode()];
            exit($e->GetErrorMessage());
        }
     }
