@@ -2,7 +2,7 @@
     "name": "mmltech/cnp-decoder",
     "description": "O clasa simpla prin care se pot extrage componentele CNP-ului introdus, componente precum vârsta, jude?, gen, etc.",
     "type": "library",
-    "license": "GNU General Public License v3.0",
+    "license": "GPL-3.0-or-later",
     "autoload": {
         "psr-4": {
             "CnpDecoder\\": "src/"
