@@ -9,7 +9,7 @@
         },
         "files": [
             "src/CNPDecoder.php",
-            "src/DecoderEngine.php",
+            "src/DecoderEngine.php"
         ]
     },
     "authors": [
