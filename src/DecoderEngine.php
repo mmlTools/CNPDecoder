@@ -23,7 +23,7 @@
  * C - Componenta C este formată dintr-o cifră de control⁠(en), care permite depistarea eventualelor erori de înlocuire sau inversare a cifrelor din componența C.N.P
  */
 
-class CnpDecoder{
+class DecoderEngine{
     /**
      * @param $cnp
      * @return array|bool
@@ -73,7 +73,7 @@ class CnpDecoder{
      * Anul nașterii pe baza componentei S care determină secolul
      * @return int
      */
-    public function BirthYear(){
+    protected function BirthYear(){
         switch ($this->S){
             case 1:
             case 2:
@@ -95,7 +95,7 @@ class CnpDecoder{
      * Vârsta pe baza datei formatate din CNP
      * @return int
      */
-    public function Age(){
+    protected function Age(){
         $an = $this->BirthYear();
 
         return (date("md", date("U", mktime(0, 0, 0, $this->LL, $this->ZZ, $an))) > date("md")
@@ -107,7 +107,7 @@ class CnpDecoder{
      * Returnează un timestamp aferent datei nașterii din CNP
      * @return false|int
      */
-    public function BirthYearTimestamp(){
+    protected function BirthYearTimestamp(){
         return strtotime($this->BirthYear().'/'.$this->LL.'/'.$this->ZZ);
     }
 
@@ -118,7 +118,7 @@ class CnpDecoder{
      * 2 - Feminin
      * @return int
      */
-    public function Gender(){
+    protected function Gender(){
         switch ($this->S){
             case 1:
             case 3:
@@ -140,14 +140,14 @@ class CnpDecoder{
     /**
      * @return mixed
      */
-    public function ControlNumber(){
+    protected function ControlNumber(){
         return $this->NNN;
     }
 
     /**
      * @return mixed
      */
-    public function CountyCode(){
+    protected function CountyCode(){
         return $this->JJ;
     }
 
@@ -155,14 +155,14 @@ class CnpDecoder{
      * Avem deja o validare în acest sens deci returnăm direct denumirea județului
      * @return mixed
      */
-    public function CountyName(){
+    protected function CountyName(){
         return $this->judete[$this->JJ];
     }
 
     /**
      * @return string
      */
-    public function DaysLeftUntilBirthday(){
+    protected function DaysLeftUntilBirthday(){
         $datetime1 = date_create(date("Y").'-'.$this->LL.'-'.$this->ZZ);
         $datetime2 = date_create(date("Y-m-d"));
         $interval = date_diff($datetime1, $datetime2);
@@ -170,14 +170,14 @@ class CnpDecoder{
     }
 
     // Componentele CNP-ului
-    private $S, $AA, $LL, $ZZ, $JJ, $NNN, $C;
+    protected $S, $AA, $LL, $ZZ, $JJ, $NNN, $C;
 
     // Variabila care stochează erorile de validare
     // Implicit are valoarea NULL
-    public $validator;
+    protected $validator;
 
     // O listă cu județele și codurile aferente componentei JJ
-    private $judete = [
+    protected $judete = [
         1 => 'Alba',
         2 => 'Arad',
         3 => 'Argeș',
