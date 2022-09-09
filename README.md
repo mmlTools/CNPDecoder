@@ -31,46 +31,48 @@ $ composer require mmltech/cnp-decoder
 ## Utilizare
 ```php
 <?php
-	$cnp = new \CnpDecoder\CnpDecoder($_POST["cnp"]);
-	
-	echo "Vârsta: ".$cnp->Age();
-	echo "<BR>Anul nașterii: ".$cnp->BirthYear();
-	echo "<BR>Data nașterii timestamp: ".$cnp->BirthYearTimestamp();
-	echo "<BR>Data nașterii: ".date("d M Y", $cnp->BirthYearTimestamp());
-	echo "<BR>Zile rămase până la data nașterii: ".$cnp->DaysLeftUntilBirthday();
-	echo "<BR>Genul: ".($cnp->Gender() == 1 ? "Masculin" : "Feminin");
-	echo "<BR>Cod județ: ".$cnp->CountyCode();
-	echo "<BR>Denumire județ: ".$cnp->CountyName();
-	echo "<BR><BR><strong>Interpretare CNP conform clasei:</strong>";
-	echo "<BR>Persoana cu CNP <b>".$_POST["cnp"]."</b> a fost a <b>".$cnp->ControlNumber()."</b>-a persoană de sex <b>".($cnp->Gender() == 1 ? "masculin" : "feminin")."</b> născută la data de <b>".date("d M Y", $cnp->BirthYearTimestamp())."</b> în județul <b>".$cnp->CountyName()."</b>";
-?>
+   if(isset($_POST["cnp"])){
+       CNPDecoder::init($_POST['cnp']);
+
+       echo "Vârsta: ".CNPDecoder::getAge();
+       echo "<BR>Anul nașterii: ".CNPDecoder::getBirthYear();
+       echo "<BR>Data nașterii timestamp: ".CNPDecoder::getBirthYearTimestamp();
+       echo "<BR>Data nașterii: ".date("d M Y", CNPDecoder::getBirthYearTimestamp());
+       echo "<BR>Zile rămase până la data nașterii: ".CNPDecoder::getDaysLeftUntilBirthday();
+       echo "<BR>Genul: ".(CNPDecoder::getGender() == 1 ? "Masculin" : "Feminin");
+       echo "<BR>Cod județ: ".CNPDecoder::getCountyCode();
+       echo "<BR>Denumire județ: ".CNPDecoder::getCountyName();
+       echo "<BR><BR><strong>Interpretare CNP conform clasei:</strong>";
+       echo "<BR>Persoana cu CNP <b>".$_POST["cnp"]."</b> a fost a <b>".CNPDecoder::getControlNumber()."</b>-a persoană de sex <b>".(CNPDecoder::getGender() == 1 ? "masculin" : "feminin")."</b> născută la data de <b>".date("d M Y", CNPDecoder::getBirthYearTimestamp())."</b> în județul <b>".CNPDecoder::getCountyName()."</b>";
+   }
+ ?>
 ```
 
 ## Metode disponibile
 
 ```php
 // Returnează anul nașterii în format AAAA
-BirthYear()
+getBirthYear()
 
 // Returnează vârsta la momentul utilizării
-Age()
+getAge()
 
 // Returnează un timestamp aferent anului, lunii și a zilei din CNP
-BirthYearTimestamp()
+getBirthYearTimestamp()
 
 // Returnează un nr întreg aferent genului
-Gender()
+getGender()
 
 // Returnează numărul de control
-ControlNumber()
+getControlNumber()
 
 // Returnează codul județului
-CountyCode()
+getCountyCode()
 
 // Returnnează denumirea județului
-CountyName()
+getCountyName()
 
 // Returnează numărul de zile rămase până la data nașterii
-DaysLeftUntilBirthday()
+getDaysLeftUntilBirthday()
 
 ```

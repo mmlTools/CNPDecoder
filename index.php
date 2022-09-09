@@ -25,7 +25,6 @@
             echo "<BR>Denumire județ: ".CNPDecoder::getCountyName();
             echo "<BR><BR><strong>Interpretare CNP conform clasei:</strong>";
             echo "<BR>Persoana cu CNP <b>".$_POST["cnp"]."</b> a fost a <b>".CNPDecoder::getControlNumber()."</b>-a persoană de sex <b>".(CNPDecoder::getGender() == 1 ? "masculin" : "feminin")."</b> născută la data de <b>".date("d M Y", CNPDecoder::getBirthYearTimestamp())."</b> în județul <b>".CNPDecoder::getCountyName()."</b>";
-
         }
     ?>
 </form>
