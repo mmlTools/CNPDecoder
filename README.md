@@ -3,7 +3,7 @@
  O clasă PHP simplă prin care se pot extrage componentele aferente CNP-ului introdus, componente precum vârsta persoanei, zile rămase până la ziua de naștere, județul în care s-a născut persoana în cauză, genul, anul nașterii etc.
  
  ### Author: Marco Maxim
- ### Website: https://mmltools.com
+ ### Website: https://obscountdown.com
  ### Class CNPDecoder
  ### Structură: S AA LL ZZ JJ NNN C
  * S - Componenta S reprezintă sexul și secolul în care s-a născut persoana
